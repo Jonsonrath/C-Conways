@@ -50,7 +50,8 @@ void freePointArray(PointArray* arr) {
     arr->size = arr->capacity = 0;
 }
 
-int main() {
+int main() 
+{
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
 
@@ -73,15 +74,15 @@ int main() {
     Cursor cursor = {320, 240};  // Start in center
 
     int running = 1;
-    SDL_Event event;
+SDL_Event event;
+int shiftPressed = 0;
 
-    while (running) {
+while (running == 1) {
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             running = 0;
         }
         else if (event.type == SDL_KEYDOWN) {
-            // Check Shift keys pressed
             if (event.key.keysym.sym == SDLK_LSHIFT || event.key.keysym.sym == SDLK_RSHIFT) {
                 shiftPressed = 1;
             }
@@ -125,29 +126,30 @@ int main() {
                 shiftPressed = 0;
             }
         }
-    
+    }  
 
-        // Clear screen
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
+    // Clear screen
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
 
-        // Draw points
-        for (size_t i = 0; i < points.size; i++) {
-            SDL_SetRenderDrawColor(renderer,
-                                   points.data[i].r,
-                                   points.data[i].g,
-                                   points.data[i].b,
-                                   points.data[i].a);
-            SDL_RenderDrawPoint(renderer, points.data[i].x, points.data[i].y);
-        }
-
-        // Draw cursor as red point
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        SDL_RenderDrawPoint(renderer, cursor.x, cursor.y);
-
-        SDL_RenderPresent(renderer);
-        SDL_Delay(16);
+    // Draw points
+    for (size_t i = 0; i < points.size; i++) {
+        SDL_SetRenderDrawColor(renderer,
+                               points.data[i].r,
+                               points.data[i].g,
+                               points.data[i].b,
+                               points.data[i].a);
+        SDL_RenderDrawPoint(renderer, points.data[i].x, points.data[i].y);
     }
+
+    // Draw cursor as red point
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_RenderDrawPoint(renderer, cursor.x, cursor.y);
+
+    SDL_RenderPresent(renderer);
+    SDL_Delay(16);
+}
+
 
     freePointArray(&points);
     SDL_DestroyRenderer(renderer);
